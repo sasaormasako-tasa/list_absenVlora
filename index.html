@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIST ABSEN VLORA LDS</title>
+    <style>
+        /* Menggunakan font sistem yang sangat umum (Arial, Sans-serif) */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --pink-glow: #ff69b4; /* Hot Pink */
+            --light-pink: #ffe4e1; /* Misty Rose */
+            --text-color: #333;
+            --bg-color: #ffffff;
+        }
+
+        body {
+            /* Ganti font utama ke 'Poppins' sebagai fallback dan sans-serif */
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+        
+        /* Font biasa untuk Judul */
+        h1 {
+            font-weight: 700;
+            color: var(--pink-glow);
+            text-shadow: 0 0 8px var(--pink-glow), 0 0 15px var(--light-pink);
+            display: inline-block;
+            font-size: 2.5em; /* Ukuran font lebih besar */
+            animation: text-glow 1.5s infinite alternate;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #c2185b;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        @keyframes text-glow {
+            from { text-shadow: 0 0 5px var(--pink-glow), 0 0 10px var(--light-pink); }
+            to { text-shadow: 0 0 10px var(--pink-glow), 0 0 20px var(--light-pink); }
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            margin-top: 10px;
+            color: #666;
+            animation: move-text 5s infinite alternate;
+        }
+
+        @keyframes move-text {
+            0% { transform: translateX(-10px); }
+            100% { transform: translateX(10px); }
+        }
+
+        .list-section {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 2px solid var(--light-pink);
+            padding-top: 20px;
+        }
+        
+        /* Gaya Khusus List Anggota */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--light-pink);
+            margin-bottom: 8px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--pink-glow);
+            transition: background-color 0.3s;
+        }
+
+        .item-info {
+            flex-grow: 1;
+        }
+
+        /* Gunakan font biasa untuk nama anggota */
+        .item-name {
+            font-weight: 600;
+            color: var(--pink-glow);
+            font-family: Arial, sans-serif; 
+        }
+
+        .item-details {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        /* Tombol Hapus */
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+
+        /* --- MANAJEMEN LIST --- */
+        .management-section {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid var(--light-pink);
+            border-radius: 10px;
+            background-color: #fcfcfc;
+        }
+
+        .management-section h3 {
+            color: var(--pink-glow);
+            margin-bottom: 15px;
+        }
+
+        .management-section input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .management-section .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .management-section .input-group input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .management-section button {
+            padding: 10px 15px;
+            background-color: #71c771; /* Green untuk Add */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .management-section button:hover {
+            background-color: #4CAF50;
+        }
+        
+        /* --- JOIN REQUEST FORM (Gaya tetap) --- */
+        .join-request {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed var(--pink-glow);
+            border-radius: 10px;
+            background-color: #fffaf0;
+            text-align: left;
+        }
+
+        .join-request h3 {
+            color: var(--pink-glow);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: #c2185b; }
+        
+        /* Font biasa untuk input form */
+        input[type="text"], input[type="number"], textarea {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; 
+            font-family: Arial, sans-serif;
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        .contact-selection { text-align: center; margin: 20px 0; padding: 10px; border-top: 1px solid #f0e6f2; }
+        .radio-label { display: inline-block; margin: 0 15px; font-weight: 400; cursor: pointer; }
+
+        .whatsapp-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: var(--pink-glow);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+        }
+
+        .whatsapp-button:hover {
+            background-color: #ff85c1;
+            transform: translateY(-2px);
+        }
+
+        /* --- FLOWER ANIMATION --- */
+        .flower {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--pink-glow);
+            border-radius: 50%;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: -1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <p class="subtitle">PENDIRI KAK MIMI</p>
+        <h1>LIST ABSEN VLORA LDS</h1> 
+    </header>
+
+    <div class="list-section">
+        <h2>PENGURUS VLORA LDS ᡣ𐭩</h2>
+        <div class="list-item">
+            <div class="item-info">
+                <div class="item-name">1. VL || TIA (Mutia)</div>
+                <div class="item-details">ID: 596878038</div>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="item-info">
+                <div class="item-name">2. VL || SACHA` (raisa)</div>
+                <div class="item-details">ID: 1131135164</div>
+            </div>
+        </div>
+    </div>
+    
+<hr>
+
+    <div class="management-section">
+        <h3>Kelola Daftar Anggota</h3>
+        <div class="input-group">
+            <input type="number" id="inputNumber" placeholder="No. Urut" required>
+            <input type="text" id="inputID" placeholder="ID Anggota" required>
+        </div>
+        <input type="text" id="inputName" placeholder="Nama Lengkap (VL || NAMA (panggilan))" required>
+        <button onclick="addMember()">Tambah Anggota</button>
+    </div>
+
+<hr>
+
+    <div class="list-section">
+        <h2>LIST ABSEN MEMBER VLORA LDS</h2>
+        <div id="memberListContainer">
+            </div>
+    </div>
+
+<hr>
+
+    <div class="join-request">
+        <h3>Form Pendaftaran Vlora LDS</h3>
+        <p>Silakan isi semua kolom di bawah ini dengan lengkap. Setelah selesai, pilih kontak pengurus yang ingin kamu kirimi pesan.</p>
+
+        <form id="joinForm">
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" required>
+            </div>
+            <div class="form-group">
+                <label for="tahunLahir">Kelahiran Tahun:</label>
+                <input type="number" id="tahunLahir" required>
+            </div>
+            <div class="form-group">
+                <label for="level">Level:</label>
+                <input type="number" id="level" required>
+            </div>
+            <div class="form-group">
+                <label for="nickname">Nickname:</label>
+                <input type="text" id="nickname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pertanyaan1">1. Kenapa kamu keluar dari guild sebelumnya?</label>
+                <textarea id="pertanyaan1" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="pertanyaan2">2. Apa yang membuat kamu tertarik join ke Vlora LDS?</label>
+                <textarea id="pertanyaan2" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="pertanyaan3">3. Apakah kamu siap mengikuti aturan yang ada di Vlora LDS?</label>
+                <textarea id="pertanyaan3" required></textarea>
+            </div>
+
+            <p style="font-style: italic; font-size: 0.9em; text-align: center; margin-top: 20px;">
+                *Jika sudah mengisi 3 pertanyaan di atas, silahkan **VN/Send Foto Perkenalan Diri***
+            </p>
+
+            <div class="contact-selection">
+                <p>Kirim form ini ke:</p>
+                <label class="radio-label">
+                    <input type="radio" name="contact" value="raisa" required checked> Kak Raisa
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="contact" value="mutia" required> Kak Mutia
+                </label>
+            </div>
+            
+            <button type="submit" class="whatsapp-button">
+                Kirim Form Pendaftaran via WhatsApp
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'vloraLdsMembers';
+
+    // Data awal Anda yang sekarang menjadi default (tanpa nomor WA, tanpa font khusus)
+    const initialMembers = [
+        { no: 1, nama: 'VL || JEYAA (eja)', id: '2343638122' },
+        { no: 2, nama: 'VL || CHASA` (chatlyn)', id: '2996399054' },
+        { no: 3, nama: 'VL || SASA (sasa)', id: '2004828206' },
+        { no: 4, nama: 'VL || FIZA (Fiza)', id: '2833566320' },
+        { no: 5, nama: 'VL || SALSA (salsa)', id: '2009290304' },
+        { no: 6, nama: 'VL || ECTÄÄ (anya)', id: '4790472114' },
+        { no: 7, nama: 'VL || NICA (nica)', id: '8936618653' },
+        { no: 8, nama: 'VL || NELA (nela)', id: '10895701691' },
+        { no: 9, nama: 'G4dis p1rang (cheyin)', id: '4200363982' },
+        { no: 10, nama: 'VL || NANA (Nana)', id: '8879555238' },
+        { no: 11, nama: 'lele terbang (Rara)', id: '6523436080' },
+        { no: 12, nama: 'VLㅤŚihh★ (kasih)', id: '9975549861' },
+        { no: 13, nama: 'tsuyuri•LIA (liaa)', id: '1964316398' },
+        { no: 14, nama: 'na֟abeyours\' (dona)', id: '2473588957' },
+        { no: 15, nama: 'AL,❎.PIAN (Celsi)', id: '112245624171' },
+        { no: 16, nama: '-16cell (cella)', id: '10074963810' },
+        { no: 17, nama: 'mylips,.n.. (diana)', id: '8184623071' }
+    ];
+
+    /**
+     * Mengambil daftar anggota dari Local Storage atau menggunakan data awal.
+     */
+    function getMembers() {
+        const storedMembers = localStorage.getItem(STORAGE_KEY);
+        if (storedMembers) {
+            return JSON.parse(storedMembers);
+        }
+        // Jika belum ada di Local Storage, gunakan data awal dan simpan.
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initialMembers));
+        return initialMembers;
+    }
+
+    /**
+     * Menyimpan daftar anggota ke Local Storage.
+     */
+    function saveMembers(members) {
+        // Urutkan berdasarkan nomor urut (no) sebelum menyimpan
+        members.sort((a, b) => a.no - b.no);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+        renderMembers(); // Render ulang setelah menyimpan
+    }
+
+    /**
+     * Menampilkan daftar anggota di HTML.
+     */
+    function renderMembers() {
+        const container = document.getElementById('memberListContainer');
+        const members = getMembers();
+        container.innerHTML = ''; // Kosongkan container
+
+        // Set nilai input nomor urut berikutnya
+        document.getElementById('inputNumber').value = members.length > 0 ? members[members.length - 1].no + 1 : 1;
+
+        members.forEach((member) => {
+            const listItem = document.createElement('div');
+            listItem.classList.add('list-item');
+            listItem.innerHTML = `
+                <div class="item-info">
+                    <div class="item-name">${member.no}. ${member.nama}</div>
+                    <div class="item-details">ID: ${member.id}</div>
+                </div>
+                <button class="delete-btn" onclick="deleteMember('${member.id}')">Hapus</button>
+            `;
+            container.appendChild(listItem);
+        });
+    }
+
+    /**
+     * Menambahkan anggota baru.
+     */
+    function addMember() {
+        const inputName = document.getElementById('inputName');
+        const inputID = document.getElementById('inputID');
+        const inputNumber = document.getElementById('inputNumber');
+
+        const name = inputName.value.trim();
+        const id = inputID.value.trim();
+        const number = parseInt(inputNumber.value.trim());
+
+        if (name === "" || id === "" || isNaN(number)) {
+            alert("Harap isi semua kolom (Nama, ID, dan No. Urut) dengan benar.");
+            return;
+        }
+
+        let members = getMembers();
+
+        // Cek duplikasi ID
+        if (members.some(member => member.id === id)) {
+            alert("Anggota dengan ID tersebut sudah ada.");
+            return;
+        }
+        
+        // Cek duplikasi No. Urut (jika ada)
+        if (members.some(member => member.no === number)) {
+            // Jika nomor duplikat, paksa nomor yang benar (length + 1)
+            const correctNumber = members.length + 1;
+            alert(`Nomor urut ${number} sudah terpakai. Anggota baru akan diberi nomor ${correctNumber}.`);
+            const newMember = { no: correctNumber, nama: name, id: id };
+            members.push(newMember);
+        } else {
+            const newMember = { no: number, nama: name, id: id };
+            members.push(newMember);
+        }
+
+        saveMembers(members); // Simpan dan Render ulang
+
+        // Bersihkan input
+        inputName.value = '';
+        inputID.value = '';
+    }
+
+    /**
+     * Menghapus anggota berdasarkan ID.
+     */
+    function deleteMember(idToDelete) {
+        if (!confirm("Apakah Anda yakin ingin menghapus anggota ini?")) {
+            return;
+        }
+        
+        let members = getMembers();
+        const updatedMembers = members.filter(member => member.id !== idToDelete);
+        
+        // Perbaiki nomor urut setelah penghapusan
+        updatedMembers.forEach((member, index) => {
+            member.no = index + 1;
+        });
+
+        saveMembers(updatedMembers); // Simpan dan Render ulang
+    }
+
+    // --- FUNGSI WHATSAPP FORM ---
+    const joinForm = document.getElementById('joinForm');
+    joinForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        sendToWhatsapp();
+    });
+
+    function sendToWhatsapp() {
+        // Ambil data dari form (gunakan ID normal)
+        const nama = document.getElementById('nama').value;
+        const tahunLahir = document.getElementById('tahunLahir').value;
+        const level = document.getElementById('level').value;
+        const nickname = document.getElementById('nickname').value;
+        const p1 = document.getElementById('pertanyaan1').value;
+        const p2 = document.getElementById('pertanyaan2').value;
+        const p3 = document.getElementById('pertanyaan3').value;
+        const selectedContact = document.querySelector('input[name="contact"]:checked').value;
+        let number = "";
+        let contactName = "";
+
+        if (selectedContact === "raisa") {
+            number = "6285233008359"; // Nomor Kak Raisa
+            contactName = "Kak Raisa (VL || SACHA`)";
+        } else if (selectedContact === "mutia") {
+            number = "6283119671151"; // Nomor Kak Mutia
+            contactName = "Kak Mutia (VL || TIA)";
+        }
+        
+        // Pesan WhatsApp (menggunakan font biasa)
+        const message = `Halo ${contactName},\n\nSaya ingin mengajukan permohonan untuk bergabung di Vlora LDS. Berikut adalah format pendaftaran yang sudah saya isi:\n\n*FORMAT PENDAFTARAN VLORA LDS*\n\nNama: ${nama}\nKelahiran Tahun: ${tahunLahir}\nLevel: ${level}\nNickname: ${nickname}\n\n1. Kenapa kamu keluar dari guild sebelumnya?\nJawaban: ${p1}\n\n2. Apa yang membuat kamu tertarik join ke Vlora LDS?\nJawaban: ${p2}\n\n3. Apakah kamu siap mengikuti aturan yang ada di Vlora LDS?\nJawaban: ${p3}\n\n*SAYA SUDAH SIAP UNTUK MENGIRIM VN/FOTO PERKENALAN DIRI.*`;
+
+        const wa_link = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+
+        alert(`Formulir akan dikirim ke ${contactName}. Setelah WhatsApp terbuka, silakan kirim pesan tersebut dan jangan lupa sertakan VN/foto perkenalan diri.`);
+        window.open(wa_link, '_blank');
+    }
+
+
+    // --- EFEK BUNGA JATUH & INISIALISASI ---
+    function createFlower() {
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.style.left = Math.random() * 100 + 'vw';
+        flower.style.animationDuration = Math.random() * 5 + 5 + 's';
+        flower.style.opacity = Math.random() * 0.5 + 0.3;
+        flower.style.transform = `scale(${Math.random() * 0.6 + 0.4})`;
+        document.body.appendChild(flower);
+
+        setTimeout(() => {
+            flower.remove();
+        }, 10000); 
+    }
+
+    // Panggil fungsi inisialisasi saat halaman dimuat
+    window.onload = function() {
+        renderMembers(); // Memastikan anggota terload
+        setInterval(createFlower, 500);
+    };
+</script>
+</body>
+</html>
